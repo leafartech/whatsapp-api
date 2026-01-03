@@ -9,8 +9,8 @@ const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 // ================================
 // HEALTH CHECK (Render)
 // ================================
-app.get("/", (req, res) => {
-  res.status(200).send("OK");
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Listening on port ${PORT}`);
 });
 
 // ================================
