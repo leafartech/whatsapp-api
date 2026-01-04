@@ -41,6 +41,13 @@ app.post("/webhook", (req, res) => {
   res.sendStatus(200);
 });
 
+app.post("/webhook/messages", (req, res) => {
+  const timestamp = new Date().toISOString().replace("T", " ").slice(0, 19);
+  console.log(`\nWebhook received ${timestamp}`);
+  console.log(JSON.stringify(req.body, null, 2));
+  res.sendStatus(200);
+});
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Listening on port ${PORT}`);
 });
