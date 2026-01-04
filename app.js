@@ -6,9 +6,13 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
-// ================================
-// HEALTH CHECK (Render)
-// ================================
+function requestLogger(req, res, next) {
+  console.log(`RECEBIDO: [${req.method}] ${req.path}`)
+  next()
+}
+
+app.use(requestLogger)
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Listening on port ${PORT}`);
 });
@@ -17,9 +21,6 @@ app.get("/", (req, res) => {
   res.status(200).send("OK");
 });
 
-// ================================
-// WEBHOOK VERIFY (Meta / WhatsApp)
-// ================================
 app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
@@ -33,9 +34,6 @@ app.get("/webhook", (req, res) => {
   return res.status(403).send("Forbidden");
 });
 
-// ================================
-// WEBHOOK RECEIVE EVENTS
-// ================================
 app.post("/webhook", (req, res) => {
   const timestamp = new Date().toISOString().replace("T", " ").slice(0, 19);
   console.log(`\nWebhook received ${timestamp}`);
@@ -43,9 +41,6 @@ app.post("/webhook", (req, res) => {
   res.sendStatus(200);
 });
 
-// ================================
-// START SERVER
-// ================================
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Listening on port ${PORT}`);
 });
